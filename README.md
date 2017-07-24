@@ -1,11 +1,11 @@
-## Prerequisites:
+# Prerequisites:
 1. Python 2 (2.6 or 2.7) or 3 (3.3 - 3.6)
 2. A C/C++ compiler
 3. The git and curl commands.
 4. If using the gpg subcommand, gnupg2 is required.
 5. Currently needs to be run from a filesystem that supports flock locking semantics. 
 
-## Installation:
+# Installation:
 Clone the github repository:
 ``` bash
 $ git clone https://github.com/llnl/spack.git
