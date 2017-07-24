@@ -18,16 +18,18 @@ $ export SPACK_ROOT=/path/to/spack
 $ . $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
-This adds Spack to the ``` $PATH ``` and adds the path to Spack environment modules to the $MODULEPATH and allows Spack to execute other commands.
+This adds Spack to the ``` $PATH ``` and adds the path to Spack environment modules to the ``` $MODULEPATH ``` and allows Spack to execute other commands.
 
 
-To install Spack in a different directory:
+# To install Spack in a different directory:
 
+``` bash
 $ spack bootstrap /path/to/prefix
+```
 
 
-
-To check available compilers:
+# To check available compilers:
+``` bash
 ~> spack compilers
 ==> Available compilers
 -- cce CNL-any --------------------------------------------------
@@ -45,8 +47,10 @@ intel@17.0.1.132  intel@16.3.3.210  intel@15.0.2.164  intel@15.0.1.133  intel@14
 
 -- intel suse_linux11-x86_64 ------------------------------------
 intel@15.0.2
+```
 
 Spack did not correctly detect that CDL is Sandybridge, you will need to configure it manually (below) and change the target of the CDL from x86_64 to Sandybridge, otherwise, you will get the following message when installing on target OS x86_64:
+``` bash
 ~> spack install --fake libdwarf %intel  os=suse_linux11 target=x86_64  ^libelf os=suse_linux11 target=x86_64
 ==> Installing libelf
 ==> Error: ValueError: Can't recreate arch for spec cray-suse_linux11-x86_64 on current arch cray-CNL-haswell; spec architecture is too different
@@ -58,7 +62,8 @@ Spack did not correctly detect that CDL is Sandybridge, you will need to configu
      867          if not self.spec.concrete:
      868              raise ValueError("Can only get the arch for concrete package.")
   >> 869          return spack.architecture.arch_for_spec(self.spec.architecture)
-
+```
+``` bash
 hammadsa@cdl2:~> spack compilers
 ==> Available compilers
 -- cce CNL-any --------------------------------------------------
@@ -76,7 +81,9 @@ intel@17.0.1.132  intel@16.3.3.210  intel@15.0.2.164  intel@15.0.1.133  intel@14
 
 -- intel suse_linux11-sandybridge -------------------------------
 intel@15.0.2
+```
 
+``` bash
 hammadsa@cdl2:~> spack compiler info cce@8.5.7
 cce@8.5.7:
         paths:
@@ -86,6 +93,8 @@ cce@8.5.7:
                 fc = ftn
         modules  = ['PrgEnv-cray', u'cce/8.5.7']
         operating system  = CNL
+```
+``` bash
 hammadsa@cdl2:~> spack compiler info intel@17.0.1.132
 intel@17.0.1.132:
         paths:
@@ -95,6 +104,8 @@ intel@17.0.1.132:
                 fc = ftn
         modules  = ['PrgEnv-intel', u'intel/17.0.1.132']
         operating system  = CNL
+```
+``` bash
 hammadsa@cdl2:~> spack compiler info gcc@6.2.0
 gcc@6.2.0:
         paths:
@@ -112,20 +123,25 @@ gcc@6.2.0:
                 fc = /opt/gcc/6.2.0/bin/gfortran
         modules  = []
         operating system  = suse_linux11
-
+```
 Notice Spack Cray Compiler detection for CDL and CNL. For CNL, Spack detects the compilers using module avail command (Craype-). Then it writes the appropriate PrgEnv and compiler module name to compilers.yaml and sets the paths to the C, C++, and Fortran compilers with Cray’s compiler wrapper names (i.e. cc, CC, ftn). During build time, Spack will load the correct PrgEnv and compiler module and will call appropriate wrapper.
 
-Manual compiler configuration:
+# Manual compiler configuration:
 In case auto-detection fails, manually configure the compilers by editing  ~/.spack/compilers.yaml using the following command:
+``` bash
 ~> spack config edit compilers
+```
 
 If a compiler has not been detected, pass the path to where the compiler is installed to spack compiler find or spack compiler add
+``` bash
 ~> spack compiler find /path/to/compiler
+```
 
-Listing available packages in Spack repo and available versions:
+# Listing available packages in Spack repo and available versions:
 
 Ex 1: List all packages. Currently 1652 packages available in Spack repo.
 
+``` bash
 hammadsa@cdl2:~> spack list
 ==> 1652 packages.
 abinit                           llvm                                   py-werkzeug
@@ -134,17 +150,17 @@ ack                              llvm-openmp-ompt                       py-widge
 activeharmony                    lmdb                                   py-wrapt
 adept-utils                      lmod                                   py-xarray
 adios                            lndir                                  py-xlrd
-
+```
 
 Ex 2: Search for all packages whose name contains libdwarf:
-
+``` bash
 hammadsa@cdl2:~> spack list libdwarf
 ==> 1 packages.
 libdwarf
-
+```
 
 Ex 3: Search for all packages whose name or description contains lib:
-
+``` bash
 hammadsa@cdl2:~> spack list -d lib
 ==> 459 packages.
 adept-utils               libbeagle         lua                 py-pywavelets
@@ -154,11 +170,11 @@ ant                       libcap            lzo                 py-rpy2
 argtable                  libcerf           magma               py-rtree
 armadillo                 libcircle         mallocmc            py-scipy
 atlas                     libconfig         matio               py-seaborn
-
+```
 
 
 Ex 4: show available versions of libdwarf both safe (for which Spack has the checksum) and remote ( those Spack could scrape from the web).
-
+``` bash
 hammadsa@cdl2:~> spack versions libdwarf
 ==> Safe versions (already checksummed):
   20160507  20130729  20130207  20130126
@@ -166,11 +182,11 @@ hammadsa@cdl2:~> spack versions libdwarf
   20170709  20161021  20160923  20151114  20150507  20150112  20140208
   20170416  20161001  20160613  20150915  20150310  20140519  20140131
   20161124  20160929  20160115  20150913  20150115  20140413
+```
 
 
-
-To find more information on a particular package:
-
+# To find more information on a particular package:
+``` bash
 hammadsa@cdl2:~> spack info elk
 MakefilePackage:    elk
 
@@ -214,24 +230,25 @@ Run Dependencies:
 
 Virtual Packages:
     None
+```
 
 
-
-Spack Spec:
+# Spack Spec:
 
 Shows the spec and the concrete spec (what’s going to be installed).
  a spec consists of the following pieces:
-Package name identifier.
-@ Optional version specifier (@1.2:1.4)
-% Optional compiler specifier, with an optional compiler version (gcc or gcc@4.7.3)
-+ or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for boolean variants
-name=<value> Optional variant specifiers that are not restricted to boolean variants
-name=<value> Optional compiler flag specifiers. Valid flag names are cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs.
-target=<value> os=<value> Optional architecture specifier (target=haswell os=CNL10)
-^ Dependency specs (^callpath@1.1)
+* Package name identifier.
+* @ Optional version specifier (@1.2:1.4)
+* % Optional compiler specifier, with an optional compiler version (gcc or gcc@4.7.3)
+* + or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for boolean variants
+* name=<value> Optional variant specifiers that are not restricted to boolean variants
+* name=<value> Optional compiler flag specifiers. Valid flag names are cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs.
+* target=<value> os=<value> Optional architecture specifier (target=haswell os=CNL10)
+* ^ Dependency specs (^callpath@1.1)
 
 Ex 1: Show the libdwarf unconstrained spec
 
+``` bash
 hammadsa@cdl2:~> spack spec libdwarf
 Input spec
 --------------------------------
@@ -246,9 +263,9 @@ Concretized
 --------------------------------
 libdwarf@20160507%gcc@5.1.0 arch=cray-CNL-haswell
     ^elfutils@0.163%gcc@5.1.0 arch=cray-CNL-haswell
-
+```
 Ex 2: Show libdwarf version 20130729 spec when for cce compiler.
-
+``` bash
 hammadsa@cdl2:~> spack spec libdwarf@20130729 %cce
 Input spec
 --------------------------------
@@ -264,10 +281,10 @@ Concretized
 libdwarf@20130729%cce@8.3.10 arch=cray-CNL-haswell
     ^elfutils@0.163%cce@8.3.10 arch=cray-CNL-haswell
 
-
+```
 
 Ex 3: Show libdwarf spec for cce compilers and libelf dependency (instead of elfutils)
-
+``` bash
 hammadsa@cdl2:~> spack spec libdwarf %cce ^libelf
 Input spec
 --------------------------------
@@ -283,9 +300,9 @@ Concretized
 --------------------------------
 libdwarf@20160507%cce@8.3.10 arch=cray-CNL-haswell
     ^libelf@0.8.13%cce@8.3.10 arch=cray-CNL-haswell
-
+```
 Ex 4: Show libdwarf spec for cce compiler on CDL (notice target and OS). Notice that Spack was not able to create a concretized spec because cce is not avaiiable for CDL.
-
+``` bash
 hammadsa@cdl2:~> spack spec libdwarf %cce os=suse_linux11 target=sandybridge  ^libelf
 Input spec
 --------------------------------
@@ -301,11 +318,11 @@ Concretized
 --------------------------------
 ==> Error: No compilers with spec cce found for operating system suse_linux11 and target sandybridge.
 Run 'spack compiler find' to add compilers.
-
+```
 
 
 Ex 5: Now,  Show libdwarf spec for intel compiler on CDL (notice target and OS).
-
+``` bash
 hammadsa@cdl2:~>  spack spec libdwarf %intel  os=suse_linux11 target=sandybridge  ^libelf os=suse_linux11 target=sandybridge
 
 Input spec
@@ -322,9 +339,9 @@ Concretized
 --------------------------------
 libdwarf@20160507%intel@15.0.2 arch=cray-suse_linux11-sandybridge
     ^libelf@0.8.13%intel@15.0.2 arch=cray-suse_linux11-sandybridge
-
+```
 Ex 6: Show libdwarf spec for intel compiler with the compiler flag cppflags="-O3" on CDL
-
+``` bash
 hammadsa@cdl2:~> spack spec libdwarf %intel cppflags="-O3" os=suse_linux11 target=sandybridge  ^libelf os=suse_linux11 target=sandybridge
 Input spec
 --------------------------------
@@ -388,12 +405,12 @@ hammadsa@cdl2:~> spack install --fake libdwarf %intel  os=suse_linux11 target=sa
 ==> Successfully installed libdwarf
   Fetch: .  Build: 0.24s.  Total: 0.24s.
 [+] /home/hammadsa/spack/opt/spack/cray-suse_linux11-sandybridge/intel-15.0.2/libdwarf-20160507-diazx77homt7557d7a6razkrvlcu7ha7
+```
 
+# List installed packages:
 
-List installed packages:
-
--dlvf flags show the full dependency DAG, dependency hashes as well as versions, variants and spec compiler-flags.
-
+```-dlvf``` flags show the full dependency DAG, dependency hashes as well as versions, variants and spec compiler-flags.
+``` bash
 hammadsa@cdl2:~> spack find -dlvf
 ==> 10 installed packages.
 -- cray-CNL-haswell / cce@8.3.10 --------------------------------
@@ -425,9 +442,9 @@ ycckv6k        ^libelf@0.8.13%intel cppflags="-O3"
 svbjqog    libelf@0.8.13%intel
 
 ycckv6k    libelf@0.8.13%intel cppflags="-O3"
-
-Uninstall packages:
-
+```
+# Uninstall packages:
+``` bash
 hammadsa@cdl2:~> spack uninstall libdwarf@20160507
 ==> Error: libdwarf@20160507 matches multiple packages:
 
@@ -448,7 +465,8 @@ pygjlym libdwarf@20160507%intel cppflags="-O3"
 ==> Error: You can either:
     a) use a more specific spec, or
     b) use `spack uninstall --all` to uninstall ALL matching specs.
-
+```
+``` bash
 hammadsa@cdl2:~> spack uninstall libdwarf@20160507%intel
 ==> Error: libdwarf@20160507%intel matches multiple packages:
 
@@ -461,7 +479,8 @@ pygjlym libdwarf@20160507%intel cppflags="-O3"
 ==> Error: You can either:
     a) use a more specific spec, or
     b) use `spack uninstall --all` to uninstall ALL matching specs.
-
+```
+``` bash
 hammadsa@cdl2:~> spack uninstall /pygjlym
 ==> The following packages will be uninstalled:
 
@@ -470,12 +489,15 @@ pygjlym libdwarf@20160507%intel cppflags="-O3"
 
 ==> Do you want to proceed? [y/N] y
 ==> Successfully uninstalled libdwarf@20160507%intel@15.0.2 arch=cray-suse_linux11-sandybridge /pygjlym
+```
 
-Install openmpi and gcc and elk:
+# Install openmpi and gcc and elk:
 
+``` bash
 hammadsa@cdl2:~> spack install --fake openmpi %intel
 hammadsa@cdl2:~> spack install --fake gcc
-
+```
+``` bash
 hammadsa@cdl2:~> spack find -dlvf elk
 ==> 1 installed packages.
 -- cray-CNL-haswell / gcc@5.1.0 ---------------------------------
@@ -489,11 +511,12 @@ c43vgvc                        ^xz@5.2.3%gcc
 jogye4n                        ^zlib@1.2.11%gcc+pic+shared
 qmt7e46        ^libxc@3.0.0%gcc
 rkbffe4        ^openblas@0.2.19%gcc~openmp+pic+shared
+```
 
 
+# Show providers of virtual dependencies:
 
-Show providers of virtual dependencies:
-
+``` bash
 hammadsa@cdl2:~> spack providers mpi
     intel-mpi                                         mpich@3:       openmpi         spectrum-mpi
     intel-parallel-studio@cluster.0:cluster.9999+mpi  mvapich2       openmpi@1.6.5
@@ -509,11 +532,13 @@ hammadsa@cdl2:~> spack providers mpi@3
     mpich                                             mvapich2@2.0:  openmpi@2.0.0:
 hammadsa@cdl2:~> spack providers blas
     atlas  intel-mkl  intel-parallel-studio+mkl  netlib-lapack~external-blas  openblas  veclibfort
+```
 
-Providing external packager through ~/.spack/packages.yaml
+# Providing external packager through ~/.spack/packages.yaml
 
 In this example I’m using cray-mpich as a provider for the MPI virtual dependency and cray-libsci as a provider for BLAS.
 
+``` bash
 hammadsa@cdl2:~> cat ~/.spack/packages.yaml
 packages:
   mpich:
@@ -530,8 +555,8 @@ packages:
       mpi: [mpich]
       blas: [openblas]
 
-
-
+```
+``` bash
 hammadsa@cdl2:~> spack install --fake elk +blas ^blas
 ==> mpich@7.2.6 : has external module in cray-mpich
 ==> mpich@7.2.6 : is actually installed in /opt/cray/mpt/7.2.6/gni/mpich-cray/8.3
@@ -559,9 +584,11 @@ hammadsa@cdl2:~> spack install --fake elk +blas ^blas
 ==> Successfully installed elk
   Fetch: .  Build: 0.93s.  Total: 0.93s.
 [+] /home/hammadsa/spack/opt/spack/cray-CNL-haswell/cce-8.4.1/elk-3.3.17-7xctet2qygcliynesfxv36pukgi6jdmq
+```
 
 Now, see the difference between the 2 elk packages:
 
+``` bash
 hammadsa@cdl2:~> spack find -dlvf elk
 ==> 2 installed packages.
 -- cray-CNL-haswell / cce@8.4.1 ---------------------------------
@@ -583,9 +610,11 @@ c43vgvc                        ^xz@5.2.3%gcc
 jogye4n                        ^zlib@1.2.11%gcc+pic+shared
 qmt7e46        ^libxc@3.0.0%gcc
 rkbffe4        ^openblas@0.2.19%gcc~openmp+pic+shared
+```
 
-To view the complete DAG:
+# To view the complete DAG:
 
+``` bash
 hammadsa@cdl2:~> spack graph /7xctet2
 o  elk
 |\
@@ -632,12 +661,13 @@ o | |  m4
 o |  libsigsegv
  /
 o  atlas
+```
 
-Modulefiles:
+# Modulefiles:
 
 Spack automatically generates the tcl modulefiles. However, the standard naming contains the SHA hash.
 
-
+``` bash
 hammadsa@cdl2:~> module avail elk-3.3.17
 
 --------------------- /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell ---------------------
@@ -650,8 +680,11 @@ hammadsa@cdl2:~> module avail openmpi-2.1.1
 
 --------------------- /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell ---------------------
 openmpi-2.1.1-gcc-5.1.0-wsn3bg5    openmpi-2.1.1-intel-15.0.2-2bjobfc
+```
+
 This is how the module file for gcc and openmpi looked like:
 
+``` bash
 hammadsa@cdl2:~> module show gcc-7.1.0-gcc-5.1.0-wyjyule
 -------------------------------------------------------------------
 /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell/gcc-7.1.0-gcc-5.1.0-wyjyule:
@@ -664,7 +697,8 @@ prepend-path     LD_LIBRARY_PATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell
 prepend-path     CPATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell/gcc-5.1.0/gcc-7.1.0-wyjyuler4ndo6kb2wqumid6jbefszkls/include
 prepend-path     MANPATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell/gcc-5.1.0/gcc-7.1.0-wyjyuler4ndo6kb2wqumid6jbefszkls/man
 -------------------------------------------------------------------
-
+```
+``` bash
 hammadsa@cdl2:~> module show openmpi-2.1.1-gcc-5.1.0-wsn3bg5
 -------------------------------------------------------------------
 /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell/openmpi-2.1.1-gcc-5.1.0-wsn3bg5:
@@ -677,10 +711,11 @@ prepend-path     LD_LIBRARY_PATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell
 prepend-path     CPATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell/gcc-5.1.0/openmpi-2.1.1-wsn3bg5qvw7rjm2gglildntuztmfuxdb/include
 prepend-path     MANPATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell/gcc-5.1.0/openmpi-2.1.1-wsn3bg5qvw7rjm2gglildntuztmfuxdb/man
 -------------------------------------------------------------------
-
+```
 
 Modulefiles contents and naming conventions can be customize through ~/.spack/modules.yml file
 
+``` bash
 hammadsa@cdl2:~> cat ~/.spack/modules.yaml
 modules:
   tcl:
@@ -718,24 +753,28 @@ modules:
       suffixes:
         '^openmpi': openmpi
         '^mpich': mpich
+```
 
-Important points about the above modules.yaml:
+# Important points about the above modules.yaml:
 
-we instruct Spack to remove the hash from the module name and set the naming scheme of the modules.
-we instruct Spack to conflict with any loaded module of the same package name.
-We instruct Spack to add the suffix openblas to any module that was installed with the openblas dependency, and the suffix netlib to any module that was installed with the netlib-lapack dependency.
-We instruct Spack as well to remove the CPATH and LIBRARY_PATH environment variables from the modulefiles.
-We instruct Spack to set additional environment variables for gcc and openmpi modules.
-We instruct Spack to NOT generate modulefiles for any modules compiled with gcc 4.8 compiler.
-We instruct Spack set a package_ROOT variable that corresponds to the prefix inside the modulefile.
+* we instruct Spack to remove the hash from the module name and set the naming scheme of the modules.
+* we instruct Spack to conflict with any loaded module of the same package name.
+* We instruct Spack to add the suffix openblas to any module that was installed with the openblas dependency, and the suffix netlib to any module that was installed with the netlib-lapack dependency.
+* We instruct Spack as well to remove the CPATH and LIBRARY_PATH environment variables from the modulefiles.
+* We instruct Spack to set additional environment variables for gcc and openmpi modules.
+* We instruct Spack to NOT generate modulefiles for any modules compiled with gcc 4.8 compiler.
+* We instruct Spack set a package_ROOT variable that corresponds to the prefix inside the modulefile.
 
-To regenerate the modulefiles and apply the changes:
+# To regenerate the modulefiles and apply the changes:
 
+``` bash
 hammadsa@cdl2:~> spack module refresh -y --module-type tcl
 ==> Regenerating tcl module files
+```
 
 After applying the changes:
 
+``` bash
 hammadsa@cdl2:~> module avail elk
 
 --------------------- /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell ---------------------
@@ -744,6 +783,8 @@ elk/3.3.17-gcc-5.1.0-openblas elk-3.3.17-gcc-5.1.0-j3piwwe
 
 --------------------------------------- /sw/xc40/modulefiles ----------------------------------------
 elk/3.0.4
+```
+``` bash
 hammadsa@cdl2:~> module avail gcc
 
 --------------------- /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell ---------------------
@@ -752,6 +793,8 @@ gcc/7.1.0-gcc-5.1.0         gcc-7.1.0-gcc-5.1.0-wyjyule
 ----------------------------------------- /opt/modulefiles ------------------------------------------
 gcc/4.8.1          gcc/4.9.3          gcc/5.2.0          gcc/6.1.0          gcc/6.3.0
 gcc/4.9.2          gcc/5.1.0(default) gcc/5.3.0          gcc/6.2.0
+```
+``` bash
 hammadsa@cdl2:~> module avail openmpi
 
 --------------------- /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell ---------------------
@@ -760,6 +803,8 @@ openmpi/2.1.1-intel-15.0.2         openmpi-2.1.1-intel-15.0.2-2bjobfc
 
 --------------------------------------- /sw/xc40/modulefiles ----------------------------------------
 openmpi/1.10.6
+```
+``` bash
 hammadsa@cdl2:~> module show gcc/7.1.0-gcc-5.1.0
 -------------------------------------------------------------------
 /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell/gcc/7.1.0-gcc-5.1.0:
@@ -777,7 +822,8 @@ setenv           FC gfortran
 setenv           F77 gfortran
 conflict         gcc
 -------------------------------------------------------------------
-
+```
+``` bash
 hammadsa@cdl2:~> module show openmpi/2.1.1-gcc-5.1.0
 -------------------------------------------------------------------
 /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell/openmpi/2.1.1-gcc-5.1.0:
@@ -792,7 +838,8 @@ setenv           OMPI_MCA_BTL_OPENIB_WARN_DEFAULT_GID_PREFIX 0
 setenv           OPENMPI_ROOT /home/hammadsa/spack/opt/spack/cray-CNL-haswell/gcc-5.1.0/openmpi-2.1.1-wsn3bg5qvw7rjm2gglildntuztmfuxdb
 conflict         openmpi
 -------------------------------------------------------------------
-
+```
+``` bash
 hammadsa@cdl2:~> module show elk/3.3.17-cce-8.4.1-openblas
 -------------------------------------------------------------------
 /home/hammadsa/spack/share/spack/modules/cray-CNL-haswell/elk/3.3.17-cce-8.4.1-openblas:
@@ -805,10 +852,11 @@ prepend-path     MANPATH /home/hammadsa/spack/opt/spack/cray-CNL-haswell/cce-8.4
 setenv           ELK_ROOT /home/hammadsa/spack/opt/spack/cray-CNL-haswell/cce-8.4.1/elk-3.3.17-7xctet2qygcliynesfxv36pukgi6jdmq
 conflict         elk
 -------------------------------------------------------------------
+```
 
+# Show paths to installed modules:
 
-Show paths to installed modules:
-
+``` bash
 hammadsa@cdl2:~> spack find -ep
 ==> 8 installed packages.
 -- cray-CNL-haswell / cce@8.3.10 --------------------------------
@@ -828,50 +876,60 @@ hammadsa@cdl2:~> spack find -ep
 
 -- cray-suse_linux11-sandybridge / intel@15.0.2 -----------------
     libdwarf@20160507  /home/hammadsa/spack/opt/spack/cray-suse_linux11-sandybridge/intel-15.0.2/libdwarf-20160507-diazx77homt7557d7a6razkrvlcu7ha7
+```
 
-A VERY SIMPLE Package creation example:
+# A VERY SIMPLE Package creation example:
 
 If an application is not available in Spack repo or if it’s available but we would like to tweak the build process or add variants or whatever change we would like to make to adapt it to our needs. Then we can create or edit its package file which is a simple python file. There are many build system templates to use: : python, bazel, octave, perlmake, cmake, generic, waf, makefile, autoreconf, scons, r, autotools, perlbuild
 
 Ex. Libglade (not available in Spack repo) - Dependency for p4vasp. Very simple, no dependencies that need to be installed. 
 
+``` bash
 $ spack create http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.gz
-
+```
 This will open a package file in the editor. Needs to be modified to include dependencies through the depend_on directive, include variants through variant directive, add configure arguments and tweak the build process, if needed. None of this was needed for libglade.
 
 To create a Cmake build template for some package:
 
+``` bash
 $ spack create -t cmake http://url 
+```
 
 To edit the package file:
 
+``` bash
 $  spack edit libglade
-
+```
 Then install the package as usual.
 
+``` bash
 $ spack install libglade
-
+```
 Errors will show if the install process needs to be tweaked. The following are very USEFUL debugging tools.
 
 To enter the build environment Spack used to build a package:
 
+``` bash
 Use $ spack env spec
-
+```
+``` bash
 hammadsa@cdl2:~> spack env libglade%intel  bash
+```
 
 To enter the build directory:
 
-Use $ spack cd spec
+Use ```$ spack cd spec```
 
+``` bash
 hammadsa@cdl2:~> spack cd libglade%intel
 hammadsa@cdl2:~/spack/var/spack/stage/libglade-2.6.4-5g4upczcybakgsskgubgeivuvquvw4b2/libglade-2.6.4> ./configure
+``` bash
 
 
 
 
+# Errors and fixes:
 
-Errors and fixes:
---------------------------------
 Error: ==> Error: YAML ProviderIndex was not a dict.
 Fix: rm -rf ~/.spack/cache
 
