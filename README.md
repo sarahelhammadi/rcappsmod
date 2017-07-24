@@ -923,10 +923,7 @@ Use ```$ spack cd spec```
 ``` bash
 hammadsa@cdl2:~> spack cd libglade%intel
 hammadsa@cdl2:~/spack/var/spack/stage/libglade-2.6.4-5g4upczcybakgsskgubgeivuvquvw4b2/libglade-2.6.4> ./configure
-``` bash
-
-
-
+```
 
 # Errors and fixes:
 
