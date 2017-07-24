@@ -18,8 +18,7 @@ $ export SPACK_ROOT=/path/to/spack
 $ . $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
-This adds Spack to the ``` bash 
-$PATH ``` and adds the path to Spack environment modules to the $MODULEPATH and allows Spack to execute other commands.
+This adds Spack to the ``` $PATH ``` and adds the path to Spack environment modules to the $MODULEPATH and allows Spack to execute other commands.
 
 
 To install Spack in a different directory:
