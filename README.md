@@ -11,14 +11,14 @@ Clone the github repository:
 $ git clone https://github.com/llnl/spack.git
 ```
 
-## Set up the environment and enable shell support:
+# Set up the environment and enable shell support:
 
 ``` bash
 $ export SPACK_ROOT=/path/to/spack
 $ . $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
-This adds Spack to the $PATH and adds the path to Spack environment modules to the $MODULEPATH and allows Spack to execute other commands.
+This adds Spack to the ``` bash $PATH ``` and adds the path to Spack environment modules to the $MODULEPATH and allows Spack to execute other commands.
 
 
 To install Spack in a different directory:
