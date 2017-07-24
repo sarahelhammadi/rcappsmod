@@ -928,6 +928,7 @@ hammadsa@cdl2:~/spack/var/spack/stage/libglade-2.6.4-5g4upczcybakgsskgubgeivuvqu
 # Errors and fixes:
 
 Error: ==> Error: YAML ProviderIndex was not a dict.
+
 Fix: rm -rf ~/.spack/cache
 
 
