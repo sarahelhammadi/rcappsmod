@@ -1,5 +1,3 @@
-## SPACK Hands-on Cray
-
 # Prerequisites:
 1. Python 2 (2.6 or 2.7) or 3 (3.3 - 3.6)
 2. A C/C++ compiler
